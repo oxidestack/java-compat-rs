@@ -1,0 +1,30 @@
+import java.nio.file.Path;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+
+/** Which zone SimpleDateFormat's "z" resolves each display name to (the JDK's zone-strings search order). */
+final class ZoneNameParse {
+    static final String[] NAMES = {"AEDT", "AEST", "AKDT", "AKST", "Alaska Daylight Time", "Alaska Standard Time", "Amsterdam (+0)", "Amsterdam (+1)", "Athens (+0)", "Athens (+1)", "Auckland (+0)", "Auckland (+1)", "Australian Eastern Daylight Time", "Australian Eastern Standard Time", "BST", "Bangladesh Standard Time", "Bangladesh Summer Time", "Berlin (+0)", "Berlin (+1)", "Brasilia Standard Time", "Brasilia Summer Time", "British Summer Time", "Brussels (+0)", "Brussels (+1)", "CDT", "CEST", "CET", "CST", "Cairo (+0)", "Cairo (+1)", "Calcutta (heure d\u2019\u00e9t\u00e9)", "Central Daylight Time", "Central European Standard Time", "Central European Summer Time", "Central Standard Time", "Chicago (+0)", "Chicago (+1)", "China Daylight Time", "China Standard Time", "Ciudad de M\u00e9xico (+0)", "Ciudad de M\u00e9xico (+1)", "Coordinated Universal Time", "Denver (+0)", "Denver (+1)", "Dubai (+0)", "Dubai (+1)", "Dubai Daylight Time", "Duba\u00ef (heure d\u2019\u00e9t\u00e9)", "EDT", "EEST", "EET", "EST", "Eastern Daylight Time", "Eastern European Standard Time", "Eastern European Summer Time", "Eastern Standard Time", "GMT", "GMT+01:00", "GMT+01:30", "GMT+02:00", "GMT+03:00", "GMT+04:00", "GMT+05:30", "GMT+06:00", "GMT+06:30", "GMT+07:00", "GMT+08:00", "GMT+08:20", "GMT+09:00", "GMT+10:00", "GMT+11:00", "GMT+12:00", "GMT+13:00", "GMT+23:59", "GMT-00:00", "GMT-02:00", "GMT-03:00", "GMT-04:00", "GMT-05:00", "GMT-06:00", "GMT-07:00", "GMT-08:00", "GMT-09:00", "GMT-10:00", "Greenwich Mean Time", "Gulf Standard Time", "HKST", "HKT", "HST", "Hawaii-Aleutian Standard Time", "Hong Kong (+0)", "Hong Kong (+1)", "Hong Kong Standard Time", "Hong Kong Summer Time", "Honolulu (+0)", "Honolulu (+1)", "Honolulu (heure d\u2019\u00e9t\u00e9)", "Honolulu Daylight Time", "IST", "India Standard Time", "JDT", "JST", "Japan Daylight Time", "Japan Standard Time", "Kolkata (+0)", "Kolkata (+1)", "Kolkata Daylight Time", "Lisbon (+0)", "Lisbon (+1)", "London (+0)", "London (+1)", "Los Angeles (+0)", "Los Angeles (+1)", "MDT", "MSK", "MST", "Madrid (+0)", "Madrid (+1)", "Moscow (+0)", "Moscow (+1)", "Moscow Standard Time", "Moscow Summer Time", "Mountain Daylight Time", "Mountain Standard Time", "NZDT", "NZST", "New York (+0)", "New York (+1)", "New Zealand Daylight Time", "New Zealand Standard Time", "PDT", "PST", "Pacific Daylight Time", "Pacific Standard Time", "Panama (+0)", "Panama (+1)", "Paris (+0)", "Paris (+1)", "Phoenix (+0)", "Phoenix (+1)", "Rome (+0)", "Rome (+1)", "Shanghai (+0)", "Shanghai (+1)", "Singapore (+0)", "Singapore (+1)", "Singapore Daylight Time", "Singapore Standard Time", "Singapour (heure d\u2019\u00e9t\u00e9)", "Sydney (+0)", "Sydney (+1)", "S\u00e3o Paulo (+0)", "S\u00e3o Paulo (+1)", "Tokyo (+0)", "Tokyo (+1)", "Toronto (+0)", "Toronto (+1)", "UTC", "UTC+03:00", "UTC+04:00", "UTC+06:00", "UTC+06:30", "UTC+07:00", "UTC+08:00", "UTC+08:20", "UTC\u221202:00", "UTC\u221203:00", "UTC\u221205:00", "WEST", "WET", "Western European Standard Time", "Western European Summer Time", "Zurich (+0)", "Zurich (+1)", "heure de Singapour", "heure de l\u2019Inde", "heure du Golfe", "heure d\u2019\u00e9t\u00e9 britannique", "heure d\u2019\u00e9t\u00e9 de Brasilia", "heure d\u2019\u00e9t\u00e9 de Chine", "heure d\u2019\u00e9t\u00e9 de Hong Kong", "heure d\u2019\u00e9t\u00e9 de Moscou", "heure d\u2019\u00e9t\u00e9 de la Nouvelle-Z\u00e9lande", "heure d\u2019\u00e9t\u00e9 de l\u2019Alaska", "heure d\u2019\u00e9t\u00e9 de l\u2019Est de l\u2019Australie", "heure d\u2019\u00e9t\u00e9 de l\u2019Est nord-am\u00e9ricain", "heure d\u2019\u00e9t\u00e9 des Rocheuses", "heure d\u2019\u00e9t\u00e9 du Bangladesh", "heure d\u2019\u00e9t\u00e9 du Japon", "heure d\u2019\u00e9t\u00e9 du Pacifique nord-am\u00e9ricain", "heure d\u2019\u00e9t\u00e9 du centre nord-am\u00e9ricain", "heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale", "heure d\u2019\u00e9t\u00e9 d\u2019Europe de l\u2019Est", "heure d\u2019\u00e9t\u00e9 d\u2019Europe de l\u2019Ouest", "heure moyenne de Greenwich", "heure normale de Brasilia", "heure normale de Hong Kong", "heure normale de Moscou", "heure normale de la Chine", "heure normale de la Nouvelle-Z\u00e9lande", "heure normale de l\u2019Alaska", "heure normale de l\u2019Est de l\u2019Australie", "heure normale de l\u2019Est nord-am\u00e9ricain", "heure normale des Rocheuses", "heure normale du Bangladesh", "heure normale du Japon", "heure normale du Pacifique nord-am\u00e9ricain", "heure normale du centre nord-am\u00e9ricain", "heure normale d\u2019Europe centrale", "heure normale d\u2019Europe de l\u2019Est", "heure normale d\u2019Europe de l\u2019Ouest", "heure normale d\u2019Hawa\u00ef - Al\u00e9outiennes", "temps universel coordonn\u00e9"};
+
+    static void generate(Path dir) throws Exception {
+        List<Object> out = new ArrayList<>();
+        for (Locale l : new Locale[]{Locale.US, Locale.FRANCE, Locale.ROOT}) {
+            for (String n : NAMES) {
+                SimpleDateFormat f = new SimpleDateFormat("z", l);
+                f.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
+                ParsePosition p = new ParsePosition(0);
+                Date d = f.parse(n, p);
+                if (d == null) continue;
+                TimeZone z = f.getTimeZone();
+                out.add(Json.list(l.toString(), n, z.getID(), p.getIndex(), z.getDisplayName(false, TimeZone.LONG, l), z.getDisplayName(false, TimeZone.SHORT, l),
+                        z.getDisplayName(true, TimeZone.LONG, l), z.getDisplayName(true, TimeZone.SHORT, l), Long.toString(d.getTime())));
+            }
+        }
+        Json.write(dir.resolve("zone_name_parse.json"), out);
+    }
+}

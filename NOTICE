@@ -1,0 +1,32 @@
+java-compat-rs
+Copyright The java-compat-rs Authors. Licensed under the Apache License, Version 2.0 (LICENSE).
+
+This crate reproduces behaviour of the following works. docs/provenance.md lists, module by module, what was
+consulted and where each data table comes from.
+
+OpenJDK (https://openjdk.org/), Copyright Oracle and/or its affiliates,
+GPL-2.0-only WITH Classpath-exception-2.0.
+  Behaviour is reimplemented from the Java SE API specification and from output recorded in OpenJDK 21 and 26;
+  no module is translated from OpenJDK source (docs/provenance.md, "Translated modules").
+  src/charset_data.rs reproduces OpenJDK's EUC-JP and Big5 encoders; it is generated from the Unicode mapping files
+  below, and five EUC-JP mappings observed in OpenJDK are listed in reference/gen_charsets.py.
+
+Unicode Common Locale Data Repository (CLDR) (https://cldr.unicode.org/), Copyright Unicode, Inc.
+  The locale tables (src/text/locale_numbers.rs, src/text/locale_dates.rs, src/text/symbols.rs, src/text/locale.rs,
+  src/util/tz_names.rs, src/util/tz_parse_names.rs and the symbols in src/util/currency_data.rs) are CLDR data as
+  OpenJDK exposes it: CLDR v43 (Keycloak 26.5.3's OpenJDK 21) under the Unicode License Agreement - Data Files and
+  Software (Unicode-DFS-2016), and CLDR v47 and later (OpenJDK 25/26) under the Unicode License v3 (Unicode-3.0).
+  See https://www.unicode.org/license.txt.
+
+Unicode mapping files JIS0208.TXT, JIS0212.TXT and BIG5.TXT
+(https://www.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/), Copyright Unicode, Inc., Unicode License v3
+(Unicode-3.0, https://www.unicode.org/license.txt; reference/unicode/LICENSE-Unicode.txt).
+  Copied unmodified into reference/unicode/; src/charset_data.rs is generated from them by reference/gen_charsets.py.
+
+Apache Commons Text (https://commons.apache.org/proper/commons-text/) and Apache Commons Lang
+(https://commons.apache.org/proper/commons-lang/), Copyright The Apache Software Foundation, Apache-2.0.
+  This product includes software developed at The Apache Software Foundation (https://www.apache.org/).
+  src/escape.rs and src/html4.rs follow Commons Text's StringEscapeUtils; Locale::parse and StringUtils.trim follow
+  Commons Lang.
+
+Test inputs taken from these works remain under their licences.
